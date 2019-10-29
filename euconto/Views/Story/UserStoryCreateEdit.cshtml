@@ -1,0 +1,66 @@
+﻿@model EuConto.Models.Story.StoryModel
+
+<div class="container col-8 col-sm-8 col-md-6 col-xl-5" style="margin-top: 100px;">
+    <div class="card">
+        <h5 class="card-header black white-text text-center py-4">
+            <strong>Estória</strong>
+        </h5>
+        <div class="card-body px-lg-5 pt-0 my-5">
+            <form asp-route="UserStoryCreateEdit" method="post" class="text-center">
+                <div style="display: none">
+                    <label asp-for="Id" asp-postfix=":"></label>
+                    <input asp-for="Id" class="username" autofocus="autofocus" />
+                </div>
+
+                <div class="form-row justify-content-md-center justify-content-center">
+                    <div class="md-form col-md-6 col-8">
+                        <input asp-for="Title" type="text" class="form-control align-self-center">
+                        <label asp-for="Title"></label>
+                        <span asp-validation-for="Title" class="validator-page"></span>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-md-center justify-content-center">
+                    <div class="md-form col-md-6 col-8">
+                        <input asp-for="Gender" type="text" class="form-control">
+                        <label asp-for="Gender"></label>
+                        <span asp-validation-for="Gender" class="validator-page"></span>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-md-center justify-content-center">
+                    <div class="col-md-11 col-8 form-group shadow-textarea">
+                        <div class="md-form">
+                            <textarea asp-for="Description" id="form21" class="md-textarea form-control" rows="3"></textarea>
+                            <label for="form21" asp-for="Description"></label>
+                            <span asp-validation-for="Description" class="validator-page"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-md-center justify-content-center">
+                    <div class="col-md-11 col-8 form-group shadow-textarea">
+                        <div class="custom-control custom-checkbox">
+                            <input asp-for="Published" type="checkbox" class="custom-control-input black" id="defaultUnchecked">
+                            <label asp-for="Published" class="custom-control-label" for="defaultUnchecked">Publicado</label>
+                            <span asp-validation-for="Published" class="validator-page"></span>
+                            <p class="font-small">Sua estória só será visível para outros usuários se estiver publicada</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-md-center justify-content-center">
+                    <div class="md-form col-md-6 col-8">
+                        <button class="btn btn-outline-black btn-block my-3 waves-effect" type="submit">Salvar</button>
+                    </div>
+                </div>
+
+                <div class="row justify-content-md-center justify-content-center">
+                    <div class="md-form col-md-6 col-8">
+                        <div asp-validation-summary="ModelOnly" class="validator-page"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

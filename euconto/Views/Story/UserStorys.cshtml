@@ -1,0 +1,83 @@
+﻿@model List<EuConto.Models.Story.StoryModel>
+@using EuConto.Models.Story
+
+<div class="container" style="margin-top: 100px;">
+    <section>
+
+        <section>
+            <div class="row mx-1">
+                <div class="col-md-12 mb-4 text-center">
+                    <a class="btn btn-outline-black btn-rounded waves-effect" onclick="location.href='@Url.RouteUrl("UserStoryCreateEdit", new { storyId = '0' })'"> <i class="fas fa-book-medical mr-2"></i> Criar nova Estória</a>
+                </div>
+            </div>
+        </section>
+
+        @foreach (StoryModel Story in Model)
+        {
+            <div class="row mx-1">
+                <div class="col-md-12 mb-5">
+                    <div class="card card-cascade wider reverse">
+                        <!-- Parte do autor -->
+                        @*<div class="card-body d-flex flex-row">
+
+                            <!-- Avatar -->
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
+
+                            <!-- Content -->
+                            <div>
+
+                                <!-- Title -->
+                                <h4 class="card-title font-weight-bold mb-2">Nome do autor</h4>
+                                <!-- Subtitle -->
+                                <p class="card-text"><i class="fas fa-glasses pr-2"></i>"Bio curta"</p>
+
+                            </div>
+
+                        </div>*@
+
+                        <div class="view overlay">
+                            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Slides/img%20(70).jpg" alt="Card image cap">
+                            <a href="@Url.RouteUrl("UserStoryChapters", new { storyId = Story.Id })">
+                                <div class="mask rgba-white-slight waves-effect waves-light"></div>
+                            </a>
+                        </div>
+
+                        <div class="card-body card-body-cascade text-center">
+                            <h5 class="dark-grey-text pb-2 pt-1"><i class="fas fa-archive mr-2"></i> < @Story.Gender ></h5>
+
+                            <h4 class="card-title"><strong>@Story.Title</strong></h4>
+
+                            <p class="card-text">
+                                @Story.Description
+                            </p>
+
+                            <a class="btn btn-outline-black float-md-right waves-effect" href="@Url.RouteUrl("UserStoryDelete", new { storyId = Story.Id })"><i class="fas fa-book mr-2"></i> Excluir</a>
+                            <a class="btn btn-outline-black float-md-right waves-effect" href="@Url.RouteUrl("UserStoryCreateEdit", new { storyId = Story.Id })"><i class="fas fa-book mr-2"></i> Editar</a>
+
+                        </div>
+
+                        <div class="rounded-bottom black text-center pt-3">
+                            <ul class="list-unstyled list-inline font-small">
+                                @if (Story.Published)
+                                {
+                                    <li class="list-inline-item pr-2 white-text"><i class="far fa-clock pr-1"></i>Publicado em - @Story.DtLastPublish</li>
+                                }
+                                else
+                                {
+                                    <li class="list-inline-item pr-2 white-text"><i class="far fa-clock pr-1"></i>Não Publicado</li>
+                                }
+                                <li class="list-inline-item">
+                                    <a href="#" class="white-text" onclick="event.preventDefault(); ActionLike('@Story.Id');">
+                                    <i class="@if (Story.Liked) { @Html.Raw("fas") } else { @Html.Raw("far") } fa-hand-peace pr-1" id="LikeIcon"></i>
+                                    <span id="ActionLike">@Story.Likes</span></a>
+                                </li>
+                                <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="far fa-comments pr-1"></i>@Story.Comentaries</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </section>
+</div>

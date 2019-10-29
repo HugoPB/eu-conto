@@ -1,0 +1,20 @@
+﻿@model EuConto.Models.UserModels.MainMenuModel
+
+@if (Model.LoggedIn)
+{
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.RouteUrl("UserStorys")">Minhas Estórias</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.RouteUrl("Profile", new { userId = '0' })">Meu Perfil</a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+    </li>
+}

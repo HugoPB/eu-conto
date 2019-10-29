@@ -1,0 +1,29 @@
+﻿@model EuConto.Models.Components.SpotlightUsersModel
+
+<h1> Usuários em Ascensão </h1>
+
+<div class="carousel-custom" width="80%">
+    @foreach (var User in Model.SpotlightUsers)
+    {
+        <div class="carousel-cc" style="padding: 10px;">
+            <div class="card card-cascade narrower">
+
+                <div class="view" style="max-height: 250px;">
+                    <img class="card-img-top" src="https://www.tokkoro.com/picsup/1412092-steampunk.jpg" alt="Card image cap">
+                </div>
+
+                <div class="avatar mx-auto" style="margin-top: -110px; z-index: 1;">
+                    <img style="width: 150px;" src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle">
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title"><a href="@Url.RouteUrl("Profile", new { userId = User.UserId })">@@@User.Username</a></h4>
+
+                    <hr>
+                    <p><i class="fas fa-quote-left"></i>  @User.Bio  <i class="fas fa-quote-right"></i></p>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>

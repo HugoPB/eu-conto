@@ -1,0 +1,36 @@
+﻿@model EuConto.Models.UserModels.ProfileModel
+
+<div class="container" style="margin-top: 100px;">
+    <div class="card card-cascade narrower">
+
+        <div class="view" style="max-height: 250px;">
+            <img class="card-img-top" src="https://www.tokkoro.com/picsup/1412092-steampunk.jpg" alt="Card image cap">
+        </div>
+
+        <div class="avatar mx-auto white" style="margin-top: -200px; z-index: 3000;">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle">
+        </div>
+
+        <div class="card-body">            
+            <form asp-route="ProfileEdit" method="post">
+                <button class="btn-sm btn-outline-black float-right btn-rounded waves-effect" type="submit">Salvar</button>
+
+                <div class="md-form col-md-6 col-8">
+                    <input asp-for="FullName" type="text" class="form-control">
+                    <label asp-for="FullName"></label>
+                    <span asp-validation-for="FullName" class="validator-page"></span>
+                </div>
+                <h4 class="card-title"> @@@Model.Username</h4>
+
+                <hr>
+                <p>
+                   <div class="md-form col-md-10">
+                       <input asp-for="Bio" type="text" class="form-control">
+                       <label asp-for="Bio"></label>
+                       <span asp-validation-for="Bio" class="validator-page"></span>
+                   </div>
+                </p>
+            </form> 
+        </div>
+    </div>
+</div>

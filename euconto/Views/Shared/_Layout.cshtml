@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EuConto</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+        <link href="~/lib/mdbootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/lib/mdbootstrap/css/mdb.min.css" rel="stylesheet">
+        <link href="~/css/beagle.css" rel="stylesheet">
+        <link href="~/css/medium-editor.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="~/lib/slick/slick.css" />
+        <link rel="stylesheet" type="text/css" href="~/lib/slick/slick-theme.css" />
+        <link href="~/lib/one-page-wonder.min.css" rel="stylesheet">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+        <link href="~/lib/mdbootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/lib/mdbootstrap/css/mdb.min.css" rel="stylesheet">
+        <link href="~/css/beagle.css" rel="stylesheet">
+        <link href="~/css/medium-editor.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="~/lib/slick/slick.css" />
+        <link rel="stylesheet" type="text/css" href="~/lib/slick/slick-theme.css" />
+        <link href="~/lib/one-page-wonder.min.css" rel="stylesheet">
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" />
+    @* SCRIPTS *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/mdbootstrap/js/popper.min.js"></script>
+        <script src="~/lib/mdbootstrap/js/bootstrap.min.js"></script>
+        <script src="~/lib/mdbootstrap/js/mdb.min.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/mdbootstrap/js/popper.min.js"></script>
+        <script src="~/lib/mdbootstrap/js/bootstrap.min.js"></script>
+        <script src="~/lib/mdbootstrap/js/mdb.min.js"></script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/medium-editor.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/lib/slick/slick.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="mb-1 navbar navbar-expand-lg navbar-dark black fixed-top navbar-custom">
+            <a class="navbar-brand" href="/">EUCONTO</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+                    aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+                <ul class="navbar-nav mr-auto">
+                    @await Component.InvokeAsync("MainMenu")
+                </ul>
+                <ul class="navbar-nav ml-auto nav-flex-icons">
+                    @await Component.InvokeAsync("BarUserMenu")
+                </ul>
+                <form class="form-inline">
+                    <div class="md-form my-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Nova pesquisa" aria-label="Search">
+                    </div>
+                    <button class="btn btn-outline-white btn-sm my-0" type="submit">Pesquisar</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    @RenderBody()
+
+    <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
+        <div class="toast-header">
+            <svg class=" rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" />
+            </svg>
+            <strong class="mr-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+
+    <footer class="black border-top footer text-footer">
+        <div class="container">
+            © 2019 - euconto - Um Ofericimento: boratcc.agoravai
+        </div>
+    </footer>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        $('.carousel-custom').slick({
+            infinite: false,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            dots: true,
+            arrows: true,
+            responsive: [
+                {
+                    breakpoint: 1600,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 1110,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                        infinite: false,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 800,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        infinite: false,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 550,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        infinite: false,
+                        dots: true
+                    }
+                }
+            ]
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

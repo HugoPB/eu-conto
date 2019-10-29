@@ -1,0 +1,36 @@
+﻿@model EuConto.Models.Components.NewStoriesModel
+
+<h1> Lançamentos </h1>
+
+<div class="carousel-custom" width="80%">
+    @foreach (var Story in Model.SpotlightStory)
+    {
+        <div class="carousel-cc" style="padding: 10px;">
+            <div class="">
+                <div class="card mb-2">
+                    <div class="card-body d-flex flex-row justify-content-center" style="padding: 0.50rem">
+
+                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
+
+                        <div>
+                            <h4 class="card-title font-weight-bold flex-center"><a href="@Url.RouteUrl("Profile", new { userId = Story.UserId })">@@@Story.Username </a></h4>
+                        </div>
+
+                    </div>
+                    <div class="view overlay">
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (36).jpg">
+                        <a href="@Url.RouteUrl("UserStoryChapters", new { storyId = Story.StoryId })">
+                            <div class="mask rgba-white-slight waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title font-weight-bold">@Story.StoryTitle</h4>
+                        <p class="card-text">
+                            @Story.StoryDescription
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

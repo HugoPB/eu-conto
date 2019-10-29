@@ -1,0 +1,191 @@
+﻿@model EuConto.Models.Story.ChapterSectionModel
+@using EuConto.Models.Story;
+
+@{
+    var SectionsToJson = Html.Raw(Json.Serialize(Model.Sections));
+
+    var ChapterId = "novo";
+    if (@Model.Chapter.Id != null)
+    {
+        ChapterId = Model.Chapter.Id;
+    }
+}
+
+<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+
+<script type="text/javascript">
+    var Sections = @SectionsToJson;
+    var ChapterId = '@Html.Raw(ChapterId)';
+</script>
+
+<style>
+    .textareaStoryChapterSection {
+        border-style: none;
+        border-color: Transparent;
+        overflow: auto;
+        outline: none;
+        width: 900px;
+    }
+
+    div[contenteditable] {
+        overflow: auto;
+        height: auto;
+        min-height: 600px;
+        text-align: left;
+        padding: 20px;
+    }
+</style>
+
+<div class="container" style="margin-top: 100px;">
+    <section>
+        <div class="row mx-1">
+            <div class="col-md-12 mb-5">
+                <div class="card card-cascade wider reverse">
+
+                    <div class="card-body card-body-cascade text-center">
+                        <h5 class="dark-grey-text pb-2 pt-1"><i class="fas fa-archive mr-2"></i> < @Model.Story.Gender ></h5>
+
+                        <h4 class="card-title"><strong>@Model.Story.Title</strong></h4>
+
+                        <p class="card-text">
+                            @Model.Story.Description
+                        </p>
+                    </div>
+
+                    <div class="container">
+                        <section>
+
+                            <section>
+                                <div class="row mx-1">
+                                    <div class="col-md-12 mb-4 text-center">
+                                        <a class="btn btn-outline-black btn-rounded waves-effect" onclick="location.href='@Url.RouteUrl("UserStoryChapterSectionsCreateEdit", new { storyId = Model.Story.Id, chapterId = '0' })'"> <i class="fas fa-book-medical mr-2"></i> Criar novo Capítulo </a>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="row mx-1">
+                                <div class="col-md-12 mb-5">
+                                    <div class="card card-cascade wider reverse">
+                                        <div class="card-body card-body-cascade text-center">
+                                            <h2 class=""><strong>Capítulo</strong></h2>
+
+                                            <div class="text-center">
+                                                <h4 class="card-title col-md-3 form-group shadow-textarea">
+                                                    <div class="md-form">
+                                                        <input type="text" id="ChapterTitle" class="md-textarea form-control" value="@Model.Chapter.Title"/ >
+                                                        <label for="ChapterTitle">Titulo</label>
+                                                    </div>
+                                                </h4>
+
+                                                <h4 class="card-text col-md-8 form-group shadow-textarea">
+                                                    <div class="md-form">
+                                                        <textarea id="ChapterDescription" class="md-textarea form-control">@Model.Chapter.Description</textarea>
+                                                        <label for="ChapterDescription">Descrição</label>
+                                                    </div>
+                                                </h4>
+                                            </div>
+
+                                            <div class="custom-control custom-checkbox float-left">
+                                                <input type="checkbox" class="custom-control-input black" id="ChapterPublished">
+                                                <label class="custom-control-label" for="ChapterPublished">Publicado</label>
+                                                <p class="font-small">Seu Capítulo só será visível para outros usuários se estiver publicada</p>
+                                            </div>
+
+                                            <a class="btn btn-outline-black float-md-right waves-effect" href="#" onclick="event.preventDefault(); SaveSectionsChapter()"><i class="fas fa-book mr-2"></i> Salvar</a>
+
+                                            <div class="container-fluid" style="margin-top: 100px;">
+                                                <section>
+                                                    <h2><strong>Conteúdo</strong></h2>
+
+                                                    <div class="row mx-1">
+                                                        <div class="col-md-12 mb-5">
+                                                            <div class="card card-cascade wider reverse">
+                                                                <div id="sections" class="editable">
+                                                                    @if (Model.Sections.Count > 0)
+                                                                    {
+                                                                        foreach (SectionModel Section in Model.Sections)
+                                                                        {
+                                                                            @Html.Raw(Section.Text);
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    var editor = new MediumEditor('.editable', {
+        toolbar: {
+            buttons: ['bold', 'italic', 'underline', 'strikethrough', 'quote', 'h1', 'h2', 'h3', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+        },
+        buttonLabels: 'fontawesome',
+        placeholder: {
+            text: 'Bora trabalhar a imaginação',
+            hideOnClick: true
+        }
+    });
+
+    @if(Model.Chapter.Published)
+    {
+        @Html.Raw("document.getElementById('ChapterPublished').checked = '" + Model.Chapter.Published + "'")
+    }
+
+    function SaveSectionsChapter() {
+        var ChapterTitle = document.getElementById("ChapterTitle").value;
+        var ChapterDescription = document.getElementById("ChapterDescription").value;
+        var ChapterPublished = document.getElementById("ChapterPublished").checked;
+        
+        if (ChapterTitle == "") {
+            toastr["warning"]("Um capítulo sem título ? inventa um, sei la...", "Titulo Vazio");
+        }
+        if (ChapterDescription == "") {
+            toastr["warning"]("Conta um pouco desse capítulo, bla bla e tals", "Descrição Vazia");
+            return;
+        }
+        if (ChapterDescription == "" || ChapterTitle == "")
+            return;
+
+        var Chapter = {
+            Id: ChapterId,
+            Seq: "",
+            Title: ChapterTitle,
+            Description: ChapterDescription,
+            Published: ChapterPublished
+        }
+        
+        var newSections = Array.from(document.getElementById('sections').children);
+
+        var SectionsToSave = new Array();
+
+        newSections.forEach(function (item, index) {
+            var S = {
+                Id: "",
+                Seq: index,
+                Text: item.outerHTML
+            }
+
+            SectionsToSave.push(S);
+        });
+
+        $.post("UserStoryChapterSectionsCreateEdit/", { storyId: '@Model.Story.Id', Chapter: Chapter, Sections: SectionsToSave }, function (result, status) {
+            ChapterId = result.chapterId;
+            Sections = result.sectionsSaved;
+
+            toastr["success"]("Dados Salvos", "Sucesso !")
+        });
+    }
+</script>
