@@ -1,7 +1,7 @@
 ﻿using EuConto.Data;
-using EuConto.Models;
 using EuConto.Models.Story;
 using EuConto.Models.UserModels;
+using EuConto.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,18 +17,15 @@ namespace EuConto.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        protected UserManager<ApplicationUserModel> _userManager;
-        protected SignInManager<ApplicationUserModel> _signInManager;
         protected ApplicationDbContext _context;
+        protected UserServices _userServices;
 
-        public UserController(
-            UserManager<ApplicationUserModel> userManager,
-            SignInManager<ApplicationUserModel> signInManager,
-            ApplicationDbContext context)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
+        public UserController(            
+            ApplicationDbContext context,
+            UserServices userServices)
+        {            
             _context = context;
+            _userServices = userServices;
         }
 
         [AllowAnonymous]
@@ -39,7 +36,7 @@ namespace EuConto.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register(RegisterModel RegisterData)
+        public async Task<IActionResult> Register(RegisterModel RegisterData)
         {
             if (ModelState.IsValid)
             {
@@ -49,18 +46,12 @@ namespace EuConto.Controllers
                     return View();
                 }
 
-                var result = _userManager.CreateAsync(new ApplicationUserModel
-                {
-                    UserName = RegisterData.Username,
-                    Email = RegisterData.Email,
-                    FullName = RegisterData.FullName,
-                    Bio = RegisterData.Bio
-                }, RegisterData.Password);
+                var RegisterResult = await _userServices.RegisterNewUserAsync(RegisterData);
 
-                if (result.Result.Succeeded)
+                if (RegisterResult.Succeeded)
                     return View("UserCreated");
 
-                foreach (var error in result.Result.Errors)
+                foreach (var error in RegisterResult.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
@@ -71,20 +62,20 @@ namespace EuConto.Controllers
         
         public IActionResult SignOut()
         {
-            _signInManager.SignOutAsync();
+            _userServices.UserSignOut();
 
             return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login(LoginModel LoginData)
+        public async Task<IActionResult> Login(LoginModel LoginData)
         {
             if (ModelState.IsValid)
             {
-                HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
-                var result = _signInManager.PasswordSignInAsync(LoginData.Username, LoginData.Password, true, false);
+                var result = _userServices.UserSignIn(LoginData.Username, LoginData.Password);
 
                 if (result.Result.Succeeded)
                 {
@@ -100,7 +91,7 @@ namespace EuConto.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            if (_signInManager.Context.User.Identity.IsAuthenticated)
+            if (_userServices.UserIsAthenticated())
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -113,7 +104,7 @@ namespace EuConto.Controllers
             if (userId == "0")
                 userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var UserProfile = await _userManager.FindByIdAsync(userId);
+            var UserProfile = await _userServices.GetByIdAsync(userId);
             var LoggedUserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var FollowersDB = _context.Followers.Include(x => x.Followers);
@@ -190,7 +181,7 @@ namespace EuConto.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var UserProfile = await _userManager.FindByIdAsync(userId);
+            var UserProfile = await _userServices.GetByIdAsync(userId);
 
             ProfileModel Model = new ProfileModel();
 
@@ -208,12 +199,12 @@ namespace EuConto.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                var UserProfile = await _userManager.FindByIdAsync(userId);
+                var UserProfile = await _userServices.GetByIdAsync(userId);
 
                 UserProfile.FullName = Profile.FullName;
                 UserProfile.Bio = Profile.Bio;
 
-                await _userManager.UpdateAsync(UserProfile);
+                await _userServices.UpdateUserAsync(UserProfile);
 
                 return RedirectToAction("Profile", new { userId = 0 });
             }
@@ -221,10 +212,10 @@ namespace EuConto.Controllers
             return View(Profile);
         }
 
-        public IActionResult UserLikeStory(string StoryId)
+        public async Task<IActionResult> UserLikeStory(string StoryId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var UserProfile = _userManager.FindByIdAsync(userId).Result;
+            var UserProfile = await _userServices.GetByIdAsync(userId);
 
             var Story = _context.Storys.Include(x => x.Interaction)
                                     .ThenInclude(x => x.Likes)
@@ -249,10 +240,10 @@ namespace EuConto.Controllers
             return Json(new { Sucesso = 1 });
         }
         
-        public IActionResult UserLikeChapter(string ChapterId)
+        public async Task<IActionResult> UserLikeChapter(string ChapterId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var UserProfile = _userManager.FindByIdAsync(userId).Result;
+            var UserProfile = await _userServices.GetByIdAsync(userId);
 
             var Chapter = _context.Chapters.Include(x => x.Interaction)
                                     .ThenInclude(x => x.Likes)

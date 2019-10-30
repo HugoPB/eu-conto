@@ -1,6 +1,8 @@
 ﻿using EuConto.Data;
 using EuConto.Infrastructure;
 using EuConto.Models;
+using EuConto.Repositorys;
+using EuConto.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +35,7 @@ namespace EuConto
             });
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
-            services.AddScoped<ApplicationDbContext>();
+            services.AddScoped<ApplicationDbContext>();            
 
             services.AddIdentity<ApplicationUserModel, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
@@ -41,6 +43,9 @@ namespace EuConto
             {
                 optons.LoginPath = "/login";
             });
+
+            services.AddScoped<UserRepository>();
+            services.AddScoped<UserServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
