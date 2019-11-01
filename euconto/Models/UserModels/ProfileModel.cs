@@ -1,4 +1,5 @@
 ﻿using EuConto.Models.Story;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +19,8 @@ namespace EuConto.Models.UserModels
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Escreva qualquer coisa, este campo é obrigatório")]
         public string Bio { get; set; }
+
+        public IFormFile ProfileImg { get; set; }
 
         public bool IsEditable { get; set; }
 

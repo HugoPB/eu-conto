@@ -106,6 +106,7 @@ namespace EuConto.Controllers
 
             var UserProfile = await _userServices.GetByIdAsync(userId);
             var LoggedUserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var LoggedUser = await _userServices.GetByIdAsync(LoggedUserID);
 
             var FollowersDB = _context.Followers.Include(x => x.Followers);
             var Followers = FollowersDB.Where(x => x.User.Id == UserProfile.Id).FirstOrDefault();
@@ -133,7 +134,10 @@ namespace EuConto.Controllers
                         Id = Story.Id,
                         Likes = Story.Interaction.Likes.Count,
                         Comentaries = Story.Interaction.Comentaries.Count,
-                        Liked = Story.Interaction.Likes.Find(x => x.User.Id == LoggedUserID) != null ? true : false
+                        Liked = Story.Interaction.Likes.Find(x => x.User.Id == LoggedUserID) != null ? true : false,
+                        InteractionId = Story.Interaction.Id,
+                        UserId = LoggedUser.Id,
+                        UserName = LoggedUser.UserName
                     });
                 }
             }
@@ -160,7 +164,10 @@ namespace EuConto.Controllers
                         Id = Story.Id,
                         Likes = Story.Interaction.Likes.Count,
                         Comentaries = Story.Interaction.Comentaries.Count,
-                        Liked = Story.Interaction.Likes.Find(x => x.User.Id == LoggedUserID) != null ? true : false
+                        Liked = Story.Interaction.Likes.Find(x => x.User.Id == LoggedUserID) != null ? true : false,
+                        InteractionId = Story.Interaction.Id,
+                        UserId = LoggedUser.Id,
+                        UserName = LoggedUser.UserName
                     });
                 }
             }

@@ -1,6 +1,18 @@
 ﻿@model List<EuConto.Models.Story.StoryModel>
 @using EuConto.Models.Story
 
+<styles>
+    .media .avatar {
+        width: 50px;
+    }
+    .shadow-textarea textarea.form-control::placeholder {
+        font-weight: 250;
+    }
+    .shadow-textarea textarea.form-control {
+        padding-left: 0.8rem;
+    }
+</styles>
+
 <div class="container" style="margin-top: 100px;">
     <section>
 
@@ -17,24 +29,6 @@
             <div class="row mx-1">
                 <div class="col-md-12 mb-5">
                     <div class="card card-cascade wider reverse">
-                        <!-- Parte do autor -->
-                        @*<div class="card-body d-flex flex-row">
-
-                            <!-- Avatar -->
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
-
-                            <!-- Content -->
-                            <div>
-
-                                <!-- Title -->
-                                <h4 class="card-title font-weight-bold mb-2">Nome do autor</h4>
-                                <!-- Subtitle -->
-                                <p class="card-text"><i class="fas fa-glasses pr-2"></i>"Bio curta"</p>
-
-                            </div>
-
-                        </div>*@
-
                         <div class="view overlay">
                             <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Slides/img%20(70).jpg" alt="Card image cap">
                             <a href="@Url.RouteUrl("UserStoryChapters", new { storyId = Story.Id })">
@@ -68,12 +62,16 @@
                                 }
                                 <li class="list-inline-item">
                                     <a href="#" class="white-text" onclick="event.preventDefault(); ActionLike('@Story.Id');">
-                                    <i class="@if (Story.Liked) { @Html.Raw("fas") } else { @Html.Raw("far") } fa-hand-peace pr-1" id="LikeIcon"></i>
-                                    <span id="ActionLike">@Story.Likes</span></a>
+                                        <i class="@if (Story.Liked) { @Html.Raw("fas") } else { @Html.Raw("far") } fa-hand-peace pr-1" id="LikeIcon"></i>
+                                        <span id="ActionLike">@Story.Likes</span>
+                                    </a>
                                 </li>
-                                <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="far fa-comments pr-1"></i>@Story.Comentaries</a></li>
+                                <li class="list-inline-item pr-2"><a class="white-text"><i class="far fa-comments pr-1" onclick="Comentaries('@Story.InteractionId','@Story.UserName','@Story.UserId')"></i><span id="ActionComentaries-@Story.InteractionId">@Story.Comentaries</span></a></li>
                             </ul>
                         </div>
+
+                        <section id="Comentaries-@Story.InteractionId" style="margin: 25px; display: none;">                
+                        </section>
 
                     </div>
                 </div>

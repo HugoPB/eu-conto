@@ -36,5 +36,11 @@ namespace EuConto.Models.Story
         public int Comentaries { get; set; }
 
         public bool Liked { get; set; }
+
+        public string InteractionId { get; set; }
+
+        public string UserName { get; set; }
+
+        public string UserId { get; set; }
     }
 }

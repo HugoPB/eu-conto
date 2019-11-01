@@ -69,6 +69,18 @@ namespace EuConto.Infrastructure
 
             //-----------------------------------------------------------------------------------
 
+            //Save Interaction
+            routeBuilder.MapRoute("SaveInteraction", "saveinteraction/",
+                new { controller = "Interaction", action = "SaveInteraction" });
+
+            //Delete Interaction
+            routeBuilder.MapRoute("DeleteInteraction", "deleteinteraction/",
+                new { controller = "Interaction", action = "DeleteInteraction" });
+
+            //Get Interaction
+            routeBuilder.MapRoute("InteractionById", "interactionbyid/",
+                new { controller = "Interaction", action = "InteractionById" });
+
         }
     }
 }

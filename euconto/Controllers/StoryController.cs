@@ -1,6 +1,7 @@
 ﻿using EuConto.Data;
 using EuConto.Models;
 using EuConto.Models.Story;
+using EuConto.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,15 @@ namespace EuConto.Controllers
     {
         protected ApplicationDbContext _context;
         protected UserManager<ApplicationUserModel> _userManager;
+        protected UserServices _userServices;
 
         public StoryController(ApplicationDbContext context,
-            UserManager<ApplicationUserModel> userManager)
+            UserManager<ApplicationUserModel> userManager,
+            UserServices userServices)
         {
             _context = context;
             _userManager = userManager;
+            _userServices = userServices;
         }
 
         #region User interactions with Story
@@ -30,6 +34,7 @@ namespace EuConto.Controllers
         public IActionResult UserStorys()
         {
             var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var UserLogged = _userManager.FindByIdAsync(UserId).Result;
             List<StoryModel> Storys = new List<StoryModel>();
 
             var DBStorys = _context.Storys.Include(x => x.User)
@@ -50,8 +55,11 @@ namespace EuConto.Controllers
                     DtLastPublish = DBStory.DtLastPublish,
                     Likes = DBStory.Interaction.Likes.Count,
                     Comentaries = DBStory.Interaction.Comentaries.Count,
-                    Liked = DBStory.Interaction.Likes.Find(x => x.User.Id == UserId) != null ? true : false
-            });
+                    Liked = DBStory.Interaction.Likes.Find(x => x.User.Id == UserId) != null ? true : false,
+                    InteractionId = DBStory.Interaction.Id,
+                    UserId = UserId,
+                    UserName = UserLogged.UserName
+                });
             }
 
             return View(Storys);
@@ -142,8 +150,9 @@ namespace EuConto.Controllers
         public IActionResult UserStoryChapters(string storyId = "0")
         {
             ChapterModel StoryChapter = new ChapterModel();
+            var UserLogged = _userServices.GetByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)).Result;
 
-            if(storyId != "0")
+            if (storyId != "0")
             {
                 var Story = _context.Storys.Include(x => x.User)
                                             .Include(x => x.Chapters)
@@ -184,7 +193,10 @@ namespace EuConto.Controllers
                                     DtLastPublish = ChapterStory.DtLastPublish,
                                     Likes = ChapterStory.Interaction.Likes.Count,
                                     Comentaries = ChapterStory.Interaction.Comentaries.Count,
-                                    Liked = ChapterStory.Interaction.Likes.Find(x => x.User.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)) != null ? true : false
+                                    Liked = ChapterStory.Interaction.Likes.Find(x => x.User.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)) != null ? true : false,
+                                    InteractionId = ChapterStory.Interaction.Id,
+                                    UserName = UserLogged.UserName,
+                                    UserId = UserLogged.Id
                                 });
                             }
 

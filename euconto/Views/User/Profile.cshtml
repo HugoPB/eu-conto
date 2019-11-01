@@ -106,9 +106,12 @@
                                     <i class="@if (Story.Liked) { @Html.Raw("fas") } else { @Html.Raw("far") } fa-hand-peace pr-1" id="LikeIcon"></i>
                                     <span id="ActionLike">@Story.Likes</span></a>
                                 </li>
-                                <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="far fa-comments pr-1"></i>@Story.Comentaries</a></li>
+                                <li class="list-inline-item pr-2"><a class="white-text"><i class="far fa-comments pr-1" onclick="Comentaries('@Story.InteractionId','@Story.UserName','@Story.UserId')"></i><span id="ActionComentaries-@Story.InteractionId">@Story.Comentaries</span></a></li>
                             </ul>
                         </div>
+
+                        <section id="Comentaries-@Story.InteractionId" style="margin: 25px; display: none;">                
+                        </section>
 
                     </div>
                 </div>

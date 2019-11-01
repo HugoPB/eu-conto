@@ -80,9 +80,13 @@
                                                                 <span id="ActionLike">@Chapter.Likes</span>
                                                             </a>
                                                         </li>
-                                                        <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="far fa-comments pr-1"></i>@Chapter.Comentaries</a></li>
+                                                        <li class="list-inline-item pr-2"><a class="white-text"><i class="far fa-comments pr-1" onclick="Comentaries('@Chapter.InteractionId','@Chapter.UserName','@Chapter.UserId')"></i><span id="ActionComentaries-@Chapter.InteractionId">@Chapter.Comentaries</span></a></li>
                                                     </ul>
                                                 </div>
+
+                                                <section id="Comentaries-@Chapter.InteractionId" style="margin: 25px; display: none;">
+
+                                                </section>
                                             </div>
                                         </div>
                                     </div>
